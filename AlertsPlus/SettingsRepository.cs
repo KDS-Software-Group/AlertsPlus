@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using static Noticore.ViewScheduler;
+using static AlertPlus.ViewScheduler;
 
-namespace Noticore
+namespace AlertPlus
 {
     public class SettingsRepository
     {
@@ -145,13 +145,13 @@ namespace Noticore
 
         private string GetDatabasePath()
         {
-            // points to C:\Users\whatevername\AppData\Local\Noticore
-            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Noticore");
+            // points to C:\Users\whatevername\AppData\Local\AlertPlus
+            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlertPlus");
 
-            // create the noticore folder if it doesn't exist
+            // create the AlertPlus folder if it doesn't exist
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
-            return Path.Combine(folder, "noticore_settings.db");
+            return Path.Combine(folder, "AlertPlus_settings.db");
         }
 
         public void DeleteNotification(int id)

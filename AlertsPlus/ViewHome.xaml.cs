@@ -11,14 +11,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Noticore
+namespace AlertPlus
 {
-    /// <summary>
-    /// Interaction logic for UserControl1.xaml
-    /// </summary>
-    public partial class ViewCustomize : UserControl
+    public partial class ViewHome : UserControl
     {
-        public ViewCustomize()
+        public ViewHome()
         {
             InitializeComponent();
         }

@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Noticore
+namespace AlertPlus
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
@@ -38,14 +38,28 @@ namespace Noticore
 
         public void ShowAndSlide()
         {
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            this.Left = screenWidth;
+            var area = SystemParameters.WorkArea;
+            string position = new SettingsRepository().GetSetting("NotificationPosition", "BottomRight");
+
+            double screenRight = area.Left + area.Width;
+            double screenLeft = area.Left;
+
+            // Horizontal starting point and resting point
+            double restX = position.Contains("Left") ? screenLeft : screenRight - 320;
+            double startX = position.Contains("Left") ? screenLeft - 320 : screenRight;
+
+            // Vertical position
+            this.Top = position.Contains("Top")
+                ? area.Top + 10
+                : area.Bottom - this.Height - 10;
+
+            this.Left = startX;
             this.Show();
 
             DoubleAnimation slide = new DoubleAnimation
             {
-                From = screenWidth,
-                To = screenWidth - 320,
+                From = startX,
+                To = restX,
                 Duration = new Duration(TimeSpan.FromMilliseconds(400)),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
             };
@@ -54,36 +68,31 @@ namespace Noticore
 
             if (!IsImportant && !_stayUntilExit)
             {
-                var timer = new DispatcherTimer
-                {
-                    Interval = TimeSpan.FromSeconds(NotificationDuration)
-                };
-
-                timer.Tick += (s, e) => {
-                    SlideOutAndClose();
-                    timer.Stop();
-                };
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(NotificationDuration) };
+                timer.Tick += (s, e) => { SlideOutAndClose(); timer.Stop(); };
                 timer.Start();
             }
         }
 
         public void SlideOutAndClose()
         {
-            // Get the current position
-            double startPos = this.Left;
-            double endPos = startPos + 400;
+            var area = SystemParameters.WorkArea;
+            string position = new SettingsRepository().GetSetting("NotificationPosition", "BottomRight");
 
-            DoubleAnimation slideAnimation = new DoubleAnimation
+            double endX = position.Contains("Left")
+                ? area.Left - 400
+                : area.Left + area.Width + 400;
+
+            DoubleAnimation slideOut = new DoubleAnimation
             {
-                From = startPos,
-                To = endPos,
+                From = this.Left,
+                To = endX,
                 Duration = TimeSpan.FromSeconds(0.5),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
             };
 
-            slideAnimation.Completed += (s, e) => this.Close();
-
-            this.BeginAnimation(Window.LeftProperty, slideAnimation);
+            slideOut.Completed += (s, e) => this.Close();
+            this.BeginAnimation(Window.LeftProperty, slideOut);
         }
 
         public void UpdateMessage(string title, string message)

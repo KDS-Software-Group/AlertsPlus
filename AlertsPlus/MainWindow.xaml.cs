@@ -1,27 +1,18 @@
-﻿using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Noticore
+namespace AlertPlus
 {
     public partial class MainContentArea : Window
     {
-        private MonitorLogic _logic;
-
         public MainContentArea()
         {
             InitializeComponent();
-            _logic = new MonitorLogic();
-            _logic.Initialize();
-
             MainContentFrame.Content = new ViewHome();
+            ApplyTitleBarStyle();
+            ApplyTheme();
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
@@ -32,6 +23,50 @@ namespace Noticore
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        public void ApplyTitleBarStyle()
+        {
+            string style = new SettingsRepository().GetSetting("TitleBarStyle", "MacOS");
+
+            if (style == "Windows")
+            {
+                // Hide mac buttons and title text
+                BtnClose.Visibility = Visibility.Collapsed;
+                BtnMinimize.Visibility = Visibility.Collapsed;
+                BtnMaximize.Visibility = Visibility.Collapsed;
+                TitleText.Visibility = Visibility.Collapsed;
+
+                // Switch to standard window chrome
+                this.AllowsTransparency = false;
+                this.WindowStyle = WindowStyle.SingleBorderWindow;
+                this.Background = new SolidColorBrush(Color.FromRgb(18, 18, 20));
+            }
+            else
+            {
+                BtnClose.Visibility = Visibility.Visible;
+                BtnMinimize.Visibility = Visibility.Visible;
+                BtnMaximize.Visibility = Visibility.Visible;
+                TitleText.Visibility = Visibility.Visible;
+            }
+        }
+
+        public void ApplyTheme()
+        {
+            string theme = new SettingsRepository().GetSetting("Theme", "Dark");
+
+            if (theme == "Light")
+            {
+                MainBorder.Background = new SolidColorBrush(Color.FromRgb(245, 245, 247));
+                SidebarBorder.Background = new SolidColorBrush(Color.FromRgb(230, 230, 235));
+                TitleText.Foreground = new SolidColorBrush(Color.FromRgb(100, 100, 100));
+            }
+            else
+            {
+                MainBorder.Background = new SolidColorBrush(Color.FromRgb(18, 18, 20));
+                SidebarBorder.Background = new SolidColorBrush(Color.FromRgb(26, 26, 28));
+                TitleText.Foreground = new SolidColorBrush(Color.FromRgb(96, 96, 96));
+            }
         }
 
         private void BtnMaximize_Click(object sender, RoutedEventArgs e)
@@ -53,15 +88,6 @@ namespace Noticore
         private void Window_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
-        }
-
-        private void DurationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (_logic != null)
-            {
-                // Update the global duration setting
-                // You may need to make a 'GlobalSettings' class or update the logic
-            }
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -103,8 +129,8 @@ namespace Noticore
                     case "History":
                         MainContentFrame.Content = new ViewHistory();
                         break;
-                    case "Customize":
-                        MainContentFrame.Content = new ViewCustomize();
+                    case "Settings":
+                        MainContentFrame.Content = new ViewSettings();
                         break;
                 }
             }

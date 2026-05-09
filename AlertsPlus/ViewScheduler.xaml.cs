@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Noticore
+namespace AlertPlus
 {
     public class ScheduledNotification
     {

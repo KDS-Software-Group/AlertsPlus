@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Noticore
+namespace AlertPlus
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
