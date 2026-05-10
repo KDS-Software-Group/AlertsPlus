@@ -1,0 +1,15 @@
+﻿<Project Sdk="WixToolset.Sdk/7.0.0">
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Harvest Include="..\AlertsPlus\bin\Release\net10.0-windows\win-x64\publish\">
+      <ComponentGroupName>AppComponents</ComponentGroupName>
+      <DirectoryRefId>INSTALLFOLDER</DirectoryRefId>
+      <SuppressRootDirectory>true</SuppressRootDirectory>
+    </Harvest>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlertsPlus\AlertsPlus.csproj" />
+  </ItemGroup>
+</Project>

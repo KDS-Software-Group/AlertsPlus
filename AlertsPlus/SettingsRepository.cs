@@ -24,7 +24,6 @@ namespace AlertPlus
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                // Existing Settings Table
                 command.CommandText = @"
             CREATE TABLE IF NOT EXISTS Settings (Key TEXT PRIMARY KEY, Value TEXT);
             CREATE TABLE IF NOT EXISTS Notifications (
@@ -32,9 +31,14 @@ namespace AlertPlus
                 Title TEXT,
                 Message TEXT,
                 TargetTime TEXT,
-                IsEnabled INTEGER
+                IsEnabled INTEGER,
+                Description TEXT DEFAULT '',
+                ExePath TEXT DEFAULT ''
             );";
                 command.ExecuteNonQuery();
+
+                try { command.CommandText = "ALTER TABLE Notifications ADD COLUMN Description TEXT DEFAULT ''"; command.ExecuteNonQuery(); } catch { }
+                try { command.CommandText = "ALTER TABLE Notifications ADD COLUMN ExePath TEXT DEFAULT ''"; command.ExecuteNonQuery(); } catch { }
             }
         }
 
@@ -99,19 +103,15 @@ namespace AlertPlus
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-
-                command.CommandText =
-                @"
-            INSERT INTO Notifications (Title, Message, TargetTime, IsEnabled) 
-            VALUES ($title, $message, $time, $enabled)
-        ";
-
+                command.CommandText = @"
+            INSERT INTO Notifications (Title, Message, TargetTime, IsEnabled, Description, ExePath)
+            VALUES ($title, $message, $time, $enabled, $description, $exePath)";
                 command.Parameters.AddWithValue("$title", notification.Title);
                 command.Parameters.AddWithValue("$message", notification.Message);
-                // We store the time as a string so SQLite can read it easily later
                 command.Parameters.AddWithValue("$time", notification.TargetTime.ToString("yyyy-MM-dd HH:mm:ss"));
                 command.Parameters.AddWithValue("$enabled", notification.IsEnabled ? 1 : 0);
-
+                command.Parameters.AddWithValue("$description", notification.Description ?? "");
+                command.Parameters.AddWithValue("$exePath", notification.ExePath ?? "");
                 command.ExecuteNonQuery();
             }
         }
@@ -123,8 +123,7 @@ namespace AlertPlus
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = "SELECT * FROM Notifications";
-
+                command.CommandText = "SELECT Id, Title, Message, TargetTime, IsEnabled, Description, ExePath FROM Notifications";
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -135,7 +134,9 @@ namespace AlertPlus
                             Title = reader.GetString(1),
                             Message = reader.GetString(2),
                             TargetTime = DateTime.Parse(reader.GetString(3)),
-                            IsEnabled = reader.GetInt32(4) == 1
+                            IsEnabled = reader.GetInt32(4) == 1,
+                            Description = reader.IsDBNull(5) ? "" : reader.GetString(5),
+                            ExePath = reader.IsDBNull(6) ? "" : reader.GetString(6)
                         });
                     }
                 }

@@ -1,0 +1,206 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+
+	<Package Name="AlertsPlus"
+             Manufacturer="KDS Software Group"
+             Version="0.9.0"
+             UpgradeCode="AB4AC2D6-CDBC-4433-9140-C6E9BAD4FC4F">
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of AlertsPlus is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<ui:WixUI Id="WixUI_InstallDir" />
+		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+
+		<Feature Id="Main" Title="AlertsPlus" Level="1">
+			<ComponentGroupRef Id="AppComponents" />
+			<ComponentRef Id="ApplicationShortcutDesktop" />
+			<ComponentRef Id="ApplicationShortcutStartMenu" />
+			<ComponentRef Id="ESqlite3" />
+			<ComponentRef Id="LibMonoPosixHelper" />
+			<ComponentRef Id="MonoPosixHelper" />
+			<ComponentRef Id="LibreHardwareMonitorRuntime" />
+			<ComponentRef Id="SystemIOPortsRuntime" />
+			<ComponentRef Id="SystemManagementRuntime" />
+		</Feature>
+	</Package>
+
+	<Fragment>
+		<StandardDirectory Id="DesktopFolder" />
+	</Fragment>
+
+	<Fragment>
+		<StandardDirectory Id="ProgramMenuFolder">
+			<Directory Id="ApplicationProgramsFolder" Name="AlertsPlus" />
+		</StandardDirectory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="AppComponents" Directory="INSTALLFOLDER">
+
+			<Component Id="MainExecutable" Guid="*">
+				<File Id="AlertsPlusExe"
+					  Source="$(var.AlertsPlus.TargetDir)AlertsPlus.exe"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="AlertsPlusDll" Guid="*">
+				<File Id="AlertsPlusDllFile"
+					  Source="$(var.AlertsPlus.TargetDir)AlertsPlus.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="AlertsPlusDeps" Guid="*">
+				<File Id="AlertsPlusDepsFile"
+					  Source="$(var.AlertsPlus.TargetDir)AlertsPlus.deps.json"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="AlertsPlusRuntimeConfig" Guid="*">
+				<File Id="AlertsPlusRuntimeConfigFile"
+					  Source="$(var.AlertsPlus.TargetDir)AlertsPlus.runtimeconfig.json"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="BlackSharpCore" Guid="*">
+				<File Id="BlackSharpCoreDll"
+					  Source="$(var.AlertsPlus.TargetDir)BlackSharp.Core.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="DiskInfoToolkit" Guid="*">
+				<File Id="DiskInfoToolkitDll"
+					  Source="$(var.AlertsPlus.TargetDir)DiskInfoToolkit.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="HidSharp" Guid="*">
+				<File Id="HidSharpDll"
+					  Source="$(var.AlertsPlus.TargetDir)HidSharp.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="MicrosoftDataSqlite" Guid="*">
+				<File Id="MicrosoftDataSqliteDll"
+					  Source="$(var.AlertsPlus.TargetDir)Microsoft.Data.Sqlite.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="RAMSPDToolkit" Guid="*">
+				<File Id="RAMSPDToolkitDll"
+					  Source="$(var.AlertsPlus.TargetDir)RAMSPDToolkit-NDD.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="SQLiteBatteries" Guid="*">
+				<File Id="SQLiteBatteriesDll"
+					  ShortName="SQLTBT.dll"
+					  Source="$(var.AlertsPlus.TargetDir)SQLitePCLRaw.batteries_v2.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="SQLiteCore" Guid="*">
+				<File Id="SQLiteCoreDll"
+					  ShortName="SQLTCO.dll"
+					  Source="$(var.AlertsPlus.TargetDir)SQLitePCLRaw.core.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="SQLiteProvider" Guid="*">
+				<File Id="SQLiteProviderDll"
+					  ShortName="SQLTPR.dll"
+					  Source="$(var.AlertsPlus.TargetDir)SQLitePCLRaw.provider.e_sqlite3.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="SystemIOPorts" Guid="*">
+				<File Id="SystemIOPortsDll"
+					  Source="$(var.AlertsPlus.TargetDir)System.IO.Ports.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+			<Component Id="SystemManagement" Guid="*">
+				<File Id="SystemManagementDll"
+					  Source="$(var.AlertsPlus.TargetDir)System.Management.dll"
+					  KeyPath="yes"/>
+			</Component>
+
+		</ComponentGroup>
+
+		<!-- Runtime directory structure -->
+		<DirectoryRef Id="INSTALLFOLDER">
+			<Directory Id="RuntimesDir" Name="runtimes">
+				<Directory Id="WinX64Dir" Name="win-x64">
+					<Directory Id="WinX64NativeDir" Name="native" />
+					<Directory Id="WinX64LibDir" Name="lib">
+						<Directory Id="WinX64Net10Dir" Name="net10.0" />
+					</Directory>
+				</Directory>
+				<Directory Id="WinDir" Name="win">
+					<Directory Id="WinLibDir" Name="lib">
+						<Directory Id="WinNet10Dir" Name="net10.0" />
+					</Directory>
+				</Directory>
+			</Directory>
+		</DirectoryRef>
+
+		<!-- win-x64 native binaries -->
+		<Component Id="ESqlite3" Guid="*" Directory="WinX64NativeDir">
+			<File Id="ESqlite3Dll"
+				  Source="$(var.AlertsPlus.TargetDir)runtimes\win-x64\native\e_sqlite3.dll"
+				  KeyPath="yes"/>
+		</Component>
+
+		<Component Id="LibMonoPosixHelper" Guid="*" Directory="WinX64NativeDir">
+			<File Id="LibMonoPosixHelperDll"
+				  Source="$(var.AlertsPlus.TargetDir)runtimes\win-x64\native\libMonoPosixHelper.dll"
+				  KeyPath="yes"/>
+		</Component>
+
+		<Component Id="MonoPosixHelper" Guid="*" Directory="WinX64NativeDir">
+			<File Id="MonoPosixHelperDll"
+				  Source="$(var.AlertsPlus.TargetDir)runtimes\win-x64\native\MonoPosixHelper.dll"
+				  KeyPath="yes"/>
+		</Component>
+
+		<!-- win-x64 lib net10.0 -->
+		<Component Id="LibreHardwareMonitorRuntime" Guid="*" Directory="WinX64Net10Dir">
+			<File Id="LibreHardwareMonitorRuntimeDll"
+				  Source="$(var.AlertsPlus.TargetDir)runtimes\win-x64\lib\net10.0\LibreHardwareMonitorLib.dll"
+				  KeyPath="yes"/>
+		</Component>
+
+		<!-- win lib net10.0 -->
+		<Component Id="SystemIOPortsRuntime" Guid="*" Directory="WinNet10Dir">
+			<File Id="SystemIOPortsRuntimeDll"
+				  Source="$(var.AlertsPlus.TargetDir)runtimes\win\lib\net10.0\System.IO.Ports.dll"
+				  KeyPath="yes"/>
+		</Component>
+
+		<Component Id="SystemManagementRuntime" Guid="*" Directory="WinNet10Dir">
+			<File Id="SystemManagementRuntimeDll"
+				  Source="$(var.AlertsPlus.TargetDir)runtimes\win\lib\net10.0\System.Management.dll"
+				  KeyPath="yes"/>
+		</Component>
+
+		<Component Id="ApplicationShortcutDesktop" Directory="DesktopFolder" Guid="*">
+			<Shortcut Id="DesktopShortcut"
+                      Name="AlertsPlus"
+                      Target="[INSTALLFOLDER]\AlertsPlus.exe"
+                      WorkingDirectory="INSTALLFOLDER"/>
+			<RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall"/>
+			<RegistryValue Root="HKCU" Key="Software\AlertsPlus"
+                           Name="DesktopShortcut" Type="integer" Value="1" KeyPath="yes"/>
+		</Component>
+
+		<Component Id="ApplicationShortcutStartMenu" Directory="ApplicationProgramsFolder" Guid="*">
+			<Shortcut Id="StartMenuShortcut"
+                      Name="AlertsPlus"
+                      Target="[INSTALLFOLDER]\AlertsPlus.exe"
+                      WorkingDirectory="INSTALLFOLDER"/>
+			<RemoveFolder Id="RemoveStartMenuFolder" Directory="ApplicationProgramsFolder" On="uninstall"/>
+			<RegistryValue Root="HKCU" Key="Software\AlertsPlus"
+                           Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes"/>
+		</Component>
+	</Fragment>
+</Wix>

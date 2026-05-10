@@ -22,8 +22,4 @@
     <PackageReference Include="System.Management" Version="10.0.7" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Page Include="App.xaml" />
-  </ItemGroup>
-
 </Project>

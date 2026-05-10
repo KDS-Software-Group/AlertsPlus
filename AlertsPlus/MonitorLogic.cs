@@ -1,7 +1,8 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
-using System.Windows;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace AlertPlus
@@ -60,7 +61,7 @@ namespace AlertPlus
                 {
                     if (IsEnabled && _mycomputer != null)
                     {
-                        float gpu = 0, cpu = 0;
+                        float gpu = 0;
 
                         try { gpu = GetGpuTemp(); } catch { }
                         // CPU disabled - LibreHardwareMonitor throws internally on this hardware
@@ -91,9 +92,37 @@ namespace AlertPlus
             }
         }
 
+        private void CheckScheduledNotifications()
+        {
+            try
+            {
+                var repo = new SettingsRepository();
+                foreach (var note in repo.GetAllNotifications())
+                {
+                    if (note.IsEnabled && DateTime.Now >= note.TargetTime)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            TriggerNotification(note.Title, note.Description);
+
+                            if (!string.IsNullOrWhiteSpace(note.ExePath))
+                            {
+                                try { Process.Start(new ProcessStartInfo(note.ExePath) { UseShellExecute = true }); }
+                                catch { }
+                            }
+                        });
+
+                        note.IsEnabled = false;
+                        repo.UpdateNotification(note);
+                    }
+                }
+            }
+            catch { }
+        }
+
         private float GetCpuTemp()
         {
-            return 0;
+            return 0; // cpu temp is broken so this shall work for now - LibreHardwareMonitor throws internally on this hardware when cpu monitoring is enabled, even if we never read the temp. GPU monitoring still works fine, so just return 0 for cpu temp and disable all cpu monitoring features until this can be fixed
         }
 
         private float GetGpuTemp()
@@ -140,7 +169,7 @@ namespace AlertPlus
                 if (MonitorCpu) CheckThreshold("CPU", CurrentCpuTemp, ref _lastCpuWarned, ref _lastCpuNotificationTime, Threshold);
 
                 _schedulerCheckCounter++;
-                if (_schedulerCheckCounter >= 15) { CheckScheduledNotifications(); _schedulerCheckCounter = 0; }
+                if (_schedulerCheckCounter >= 1) { CheckScheduledNotifications(); _schedulerCheckCounter = 0; }
             }
             catch (Exception) { }
         }
@@ -151,7 +180,7 @@ namespace AlertPlus
             {
                 bool cooledDown = (DateTime.Now - lastNotificationTime) >= NotificationCooldown;
 
-                if (currentTemp != lastWarnedTemperature && cooledDown)
+                if (cooledDown)
                 {
                     lastWarnedTemperature = currentTemp;
                     lastNotificationTime = DateTime.Now;
@@ -161,7 +190,6 @@ namespace AlertPlus
             else if (currentTemp < limit - 5)
             {
                 lastWarnedTemperature = 0;
-                lastNotificationTime = DateTime.MinValue; // reset cooldown once temp is safe
             }
         }
 
@@ -194,24 +222,6 @@ namespace AlertPlus
                 _activeNotifications[i].Top = area.Bottom - 110 - (i * 110);
                 _activeNotifications[i].Left = area.Left + area.Width - 320;
             }
-        }
-
-        private void CheckScheduledNotifications()
-        {
-            try
-            {
-                var repo = new SettingsRepository();
-                foreach (var note in repo.GetAllNotifications())
-                {
-                    if (note.IsEnabled && DateTime.Now >= note.TargetTime)
-                    {
-                        TriggerNotification(note.Title, note.Message);
-                        note.IsEnabled = false;
-                        repo.UpdateNotification(note);
-                    }
-                }
-            }
-            catch { }
         }
     }
 }
