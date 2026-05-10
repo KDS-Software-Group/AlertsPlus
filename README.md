@@ -1,48 +1,46 @@
+<div>
+
+<img width="5120" height="869" alt="banner" src="https://github.com/user-attachments/assets/5addff9a-a38c-4516-9171-b7ad07b74c75"  alt="AlertsPlus Banner" width="100%"/>
+
 <div align="center">
+<h1></h1>
 
-<img src="Banner not yet made" alt="AlertsPlus Banner" width="100%">
+Clean notification based application for alerting you about what matters most.
 
-# 🚨 AlertsPlus
-**Clean and minimal alerting system for thermal and scheduled notifications.**
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)](https://github.com/M4Carbine/AlertsPlus)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge)](https://github.com/M4Carbine/AlertsPlus)
+[![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg?style=for-the-badge)](https://github.com/M4Carbine/AlertsPlus)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Us-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/jgHWz6gVjC)
+</div>
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)](https://github.com/yourusername/AlertsPlus)
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge)](https://github.com/yourusername/AlertsPlus)
-[![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg?style=for-the-badge)](https://github.com/yourusername/AlertsPlus)
+### About App
+AlertsPlus is a versitle notification based application. 
 
----
+- Thermal Monitoring, alerts you if your temperatures are getting too high.
+- Notification Scheduling to remind yourself when to do something at any date and time.
+- Launch applications, scripts, you name it with the notification scheduler at specific times.
+- & More to come!
 
-### ⚡ Quick Overview
-AlertsPlus allows you to schedule custom notifications, launch apps along with the notifications, alerts you when your temperatures are too high, and more.
-
-[Download Latest Release](https://github.com/yourusername/AlertsPlus/releases) • [Report Bug](https://github.com/yourusername/AlertsPlus/issues)
+[Download Latest Release](https://github.com/M4Carbine/AlertsPlus/releases) • [Report Bug](https://github.com/M4Carbine/AlertsPlus/issues)
 
 </div>
 
 ---
 
-## 📸 Preview
+## Installation
 
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/42d3e2db-9713-4876-a889-1aa499946a7e" width="80%" style="border-radius: 10px;">
-</div>
+1. **Download the `AlertsPlus.Install.msi` file from the releases page.**
 
----
-
-## 🚀 Installation
-
-1. **Download Installer**
-  - Download the `AlertsPlus.Install.msi` file from the releases page.
-
-2. **Run Installer**
+3. **Run Installer**
+   - Installer may initally prompt if improper .NET Runtime is installed.
    - Follow the setup wizard.
 
 4. **Done!**
-   - Very simple and easy! Any new versions you can just download the most current .msi and it'll update the app for you.
-   - Adjust your settings to your liking.
 
 ---
-
 <div align="center">
 
-### Developed by [KDS Software Group]
+#### Developed by KDS Software Group
+##### Fully developed within VS 2026 using WPF. C# and XAML languages used. Under license MIT. For more information on licensing. please look at the licensing tab.
 </div>
+
