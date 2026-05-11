@@ -8,7 +8,7 @@
 Clean notification based application for alerting you about what matters most.
 
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)](https://github.com/M4Carbine/AlertsPlus)
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge)](https://github.com/M4Carbine/AlertsPlus)
+[![License](https://img.shields.io/badge/license-Apache%20License%202.0-green.svg?style=for-the-badge)](https://github.com/M4Carbine/AlertsPlus)
 [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg?style=for-the-badge)](https://github.com/M4Carbine/AlertsPlus)
 [![Discord](https://img.shields.io/badge/Discord-Join%20Us-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/jgHWz6gVjC)
 </div>
