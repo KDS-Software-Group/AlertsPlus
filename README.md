@@ -41,6 +41,6 @@ AlertsPlus is a versitle notification based application.
 <div align="center">
 
 #### Developed by KDS Software Group
-##### Fully developed within VS 2026 using WPF. C# and XAML languages used. Under license MIT. For more information on licensing, please look at the licensing tab.
+##### Fully developed within VS 2026 using WPF. C# and XAML languages used. Under Apache 2.0 License. For more information on licensing, please look at the licensing tab.
 </div>
 
