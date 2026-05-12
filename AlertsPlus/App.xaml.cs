@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 
 namespace AlertPlus
 {
@@ -26,7 +27,18 @@ namespace AlertPlus
                 var monitor = new MonitorLogic();
                 monitor.Initialize();
 
+                string style = new SettingsRepository().GetSetting("TitleBarStyle", "MacOS");
                 var mainWindow = new MainContentArea();
+
+                if (style == "Windows")
+                {
+                    mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+                    mainWindow.AllowsTransparency = false;
+                    mainWindow.Background = new SolidColorBrush(Color.FromRgb(18, 18, 20));
+                    mainWindow.BorderThickness = new Thickness(0);
+                    mainWindow.ResizeMode = ResizeMode.CanResize;
+                }
+
                 mainWindow.Show();
             }
             catch (Exception ex)

@@ -7,6 +7,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
+    <ApplicationIcon>alertspluslogo.ico</ApplicationIcon>
+    <PackageIcon>alertspluslogo.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +16,10 @@
     <EmbeddedResource Remove="resources\**" />
     <None Remove="resources\**" />
     <Page Remove="resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="alertspluslogo.ico" />
   </ItemGroup>
 
   <ItemGroup>

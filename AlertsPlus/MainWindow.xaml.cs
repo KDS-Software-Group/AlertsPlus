@@ -31,16 +31,13 @@ namespace AlertPlus
 
             if (style == "Windows")
             {
-                // Hide mac buttons and title text
                 BtnClose.Visibility = Visibility.Collapsed;
                 BtnMinimize.Visibility = Visibility.Collapsed;
                 BtnMaximize.Visibility = Visibility.Collapsed;
                 TitleText.Visibility = Visibility.Collapsed;
-
-                // Switch to standard window chrome
-                this.AllowsTransparency = false;
-                this.WindowStyle = WindowStyle.SingleBorderWindow;
-                this.Background = new SolidColorBrush(Color.FromRgb(18, 18, 20));
+                MainBorder.CornerRadius = new CornerRadius(0);
+                MainBorder.BorderThickness = new Thickness(0);
+                SidebarBorder.CornerRadius = new CornerRadius(0);
             }
             else
             {
@@ -48,6 +45,9 @@ namespace AlertPlus
                 BtnMinimize.Visibility = Visibility.Visible;
                 BtnMaximize.Visibility = Visibility.Visible;
                 TitleText.Visibility = Visibility.Visible;
+                MainBorder.CornerRadius = new CornerRadius(12);
+                MainBorder.BorderThickness = new Thickness(1);
+                SidebarBorder.CornerRadius = new CornerRadius(12, 0, 0, 12);
             }
         }
 

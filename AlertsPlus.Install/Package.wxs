@@ -6,6 +6,12 @@
              Version="0.9.0"
              UpgradeCode="AB4AC2D6-CDBC-4433-9140-C6E9BAD4FC4F">
 
+		
+		<WixVariable Id="WixUIDialogBmp" Value=".\alertsplus_dialog.bmp" />
+		<WixVariable Id="WixUIBannerBmp" Value=".\alertsplus_banner.bmp" />
+		<WixVariable Id="WixUILicenseRtf" Value=".\License.rtf" />
+
+		<Icon Id="AppIcon" SourceFile=".\alertspluslogo.ico" />
 		<MajorUpgrade DowngradeErrorMessage="A newer version of AlertsPlus is already installed." />
 		<MediaTemplate EmbedCab="yes" />
 
@@ -185,13 +191,15 @@
 
 		<Component Id="ApplicationShortcutDesktop" Directory="DesktopFolder" Guid="*">
 			<Shortcut Id="DesktopShortcut"
-                      Name="AlertsPlus"
-                      Target="[INSTALLFOLDER]\AlertsPlus.exe"
-                      WorkingDirectory="INSTALLFOLDER"/>
+					  Name="AlertsPlus"
+					  Target="[INSTALLFOLDER]AlertsPlus.exe"
+					  WorkingDirectory="INSTALLFOLDER"
+					  Icon="AppIcon"/>
 			<RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall"/>
 			<RegistryValue Root="HKCU" Key="Software\AlertsPlus"
-                           Name="DesktopShortcut" Type="integer" Value="1" KeyPath="yes"/>
+						   Name="DesktopShortcut" Type="integer" Value="1" KeyPath="yes"/>
 		</Component>
+
 
 		<Component Id="ApplicationShortcutStartMenu" Directory="ApplicationProgramsFolder" Guid="*">
 			<Shortcut Id="StartMenuShortcut"

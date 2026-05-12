@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Runtime.InteropServices;
 
 namespace AlertPlus
 {
@@ -23,6 +24,14 @@ namespace AlertPlus
         private bool _stayUntilExit;
         public float NotificationDuration = 12.0f;
         public bool IsImportant { get; set; } = false;
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr hwnd, int nIndex);
+
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hwnd, int nIndex, int dwNewLong);
+
+        private const int GWL_EXSTYLE = -20;
+        private const int WS_EX_TOOLWINDOW = 0x00000080;
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -34,7 +43,16 @@ namespace AlertPlus
             TitleTxt.Text = title;
             MessageTxt.Text = message;
             _stayUntilExit = stayUntilExit;
+
+            this.ShowInTaskbar = false;
+            Loaded += (s, e) =>
+            {
+                var helper = new System.Windows.Interop.WindowInteropHelper(this);
+                SetWindowLong(helper.Handle, GWL_EXSTYLE,
+                    GetWindowLong(helper.Handle, GWL_EXSTYLE) | WS_EX_TOOLWINDOW);
+            };
         }
+
 
         public void ShowAndSlide()
         {

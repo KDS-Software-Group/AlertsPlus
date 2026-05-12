@@ -11,7 +11,6 @@ namespace AlertPlus
     {
         private static bool _isInitialized = false;
         private Computer? _mycomputer;
-        private DispatcherTimer? _timer;
         private float _lastCpuWarned = 0;
         private float _lastGpuWarned = 0;
         private DateTime _lastGpuNotificationTime = DateTime.MinValue;

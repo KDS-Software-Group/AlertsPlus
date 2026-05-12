@@ -1,10 +1,18 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
+using System.Runtime.InteropServices;
 
 namespace AlertPlus
 {
     public partial class NotificationTray : Window
     {
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr hwnd, int nIndex);
+
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hwnd, int nIndex, int dwNewLong);
+
+        private const int GWL_EXSTYLE = -20;
+        private const int WS_EX_TOOLWINDOW = 0x00000080;
         private static NotificationTray? _instance;
 
         public static NotificationTray Instance
@@ -21,8 +29,14 @@ namespace AlertPlus
         {
             InitializeComponent();
 
+            this.ShowInTaskbar = false;
+
             this.Loaded += (s, e) =>
             {
+                var helper = new System.Windows.Interop.WindowInteropHelper(this);
+                helper.EnsureHandle();
+                SetWindowLong(helper.Handle, GWL_EXSTYLE,
+                GetWindowLong(helper.Handle, GWL_EXSTYLE) | WS_EX_TOOLWINDOW);
                 var area = SystemParameters.WorkArea;
                 this.Width = 350;
                 this.Height = area.Height;

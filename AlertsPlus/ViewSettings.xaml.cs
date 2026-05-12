@@ -7,13 +7,11 @@ namespace AlertPlus
     public partial class ViewSettings : UserControl
     {
         private readonly SettingsRepository _repo = new SettingsRepository();
-        private bool _isInitializing = true;
 
         public ViewSettings()
         {
             InitializeComponent();
             LoadSettings();
-            _isInitializing = false;
         }
 
         private void LoadSettings()
