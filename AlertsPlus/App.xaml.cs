@@ -10,18 +10,31 @@ namespace AlertPlus
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            // creates mutex to ensure single instance
             _mutex = new Mutex(true, "AlertPlus_SingleInstance", out bool isNewInstance);
 
+            // sends message if instance already running then exits
             if (!isNewInstance)
             {
-                System.Windows.MessageBox.Show("AlertPlus is already running.", "AlertPlus", MessageBoxButton.OK, MessageBoxImage.Information);
+                NativeMethods.PostMessage(
+                    NativeMethods.FindWindow(null, "AlertPlus"),
+                    NativeMethods.WM_SHOWWINDOW, IntPtr.Zero, IntPtr.Zero);
                 Application.Current.Shutdown();
                 return;
             }
 
+            // wpf stuff
             base.OnStartup(e);
             this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
+            // splash screen stuff
+            var splash = new SplashScreen(() => LaunchApp());
+            splash.Show();
+        }
+
+        private void LaunchApp()
+        {
+            // initializes monitor logic and main window, applies title bar style based on settings, and shows the main window
             try
             {
                 var monitor = new MonitorLogic();
@@ -41,6 +54,7 @@ namespace AlertPlus
 
                 mainWindow.Show();
             }
+            // error throwing incase of this garbage code breaking or something
             catch (Exception ex)
             {
                 MessageBox.Show($"Startup error:\n\n{ex.GetType().Name}\n\n{ex.Message}\n\n{ex.StackTrace}",

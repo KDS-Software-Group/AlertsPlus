@@ -1,9 +1,6 @@
 ﻿using LibreHardwareMonitor.Hardware;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace AlertPlus
 {
@@ -35,7 +32,8 @@ namespace AlertPlus
             if (_isInitialized) return;
 
             Application.Current.Dispatcher.Invoke(() => _tray.Show());
-
+            
+            // liberehardwaremonitor loading and settings loading
             _mycomputer = new Computer() { IsGpuEnabled = true, IsCpuEnabled = true };
             _mycomputer.Open();
 
@@ -48,7 +46,7 @@ namespace AlertPlus
 
             _isInitialized = true;
 
-            // Run monitoring on background thread so crashes don't kill the app
+            // run monitoring on background thread so crashes don't kill the app
             Task.Run(() => MonitorLoop());
         }
 
@@ -63,7 +61,7 @@ namespace AlertPlus
                         float gpu = 0;
 
                         try { gpu = GetGpuTemp(); } catch { }
-                        // CPU disabled - LibreHardwareMonitor throws internally on this hardware
+                        // cpu is disabled because i cant get it working without the entire library crashing on this hardware, even if i never read cpu temps. just return 0 for cpu temp and disable all cpu monitoring features until this can be fixed
                         CurrentGpuTemp = gpu;
                         CurrentCpuTemp = 0;
 
@@ -93,6 +91,7 @@ namespace AlertPlus
 
         private void CheckScheduledNotifications()
         {
+            // checks for scheduled notifications and triggers them if their time has come 
             try
             {
                 var repo = new SettingsRepository();
@@ -121,19 +120,21 @@ namespace AlertPlus
 
         private float GetCpuTemp()
         {
-            return 0; // cpu temp is broken so this shall work for now - LibreHardwareMonitor throws internally on this hardware when cpu monitoring is enabled, even if we never read the temp. GPU monitoring still works fine, so just return 0 for cpu temp and disable all cpu monitoring features until this can be fixed
+            return 0; // cpu temp is broken so this shall work for now as explained in previous comments
         }
 
         private float GetGpuTemp()
         {
             float max = 0, coreTemp = 0;
+
+            // gets gpu temp with liberhardwaremonitor
             try
             {
                 foreach (var hardware in _mycomputer!.Hardware)
                 {
                     if (hardware == null) continue;
                     if (hardware.HardwareType != HardwareType.GpuNvidia &&
-                        hardware.HardwareType != HardwareType.GpuAmd) continue;
+                        hardware.HardwareType != HardwareType.GpuAmd && hardware.HardwareType != HardwareType.GpuIntel) continue;
 
                     hardware.Update();
 
@@ -155,6 +156,7 @@ namespace AlertPlus
             return UseHotspot ? max : (coreTemp > 0 ? coreTemp : max);
         }
 
+        // my old runcheck! Its probably useless but will leave here for redundancy until im sure the new system is stable. It runs on the same timer as the old one did so it should be fine to just call it instead of the new code if i need to revert for some reason
         private void RunCheck()
         {
             if (!IsEnabled || _mycomputer == null) return;
@@ -173,6 +175,7 @@ namespace AlertPlus
             catch (Exception) { }
         }
 
+        // checks if the current temp exceeds the limit and if enough time has passed since the last notification before triggering a new one. also resets the warning if the temp drops significantly below the limit
         private void CheckThreshold(string label, float currentTemp, ref float lastWarnedTemperature, ref DateTime lastNotificationTime, float limit)
         {
             if (currentTemp > limit)
@@ -191,6 +194,8 @@ namespace AlertPlus
                 lastWarnedTemperature = 0;
             }
         }
+
+        // creates and shows a new notification, stacking it above existing ones and removing it from the list when closed
 
         private void TriggerNotification(string title, string body, bool critical = false)
         {
@@ -213,6 +218,7 @@ namespace AlertPlus
             notification.ShowAndSlide();
         }
 
+        // repositions all active notifications should be called after one is closed to fill gaps and keep them stacked nicely
         private void ReStackNotifications()
         {
             var area = System.Windows.SystemParameters.WorkArea;

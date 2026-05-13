@@ -203,7 +203,6 @@
                     </Border>
 
                     <UniformGrid Columns="2" Margin="0,11,0,0">
-                        <!-- CPU Card (Ungrayed & Graph Added) -->
                         <Border Margin="0,0,10,10" Style="{StaticResource CardStyle}">
                             <StackPanel>
                                 <DockPanel Margin="0,0,0,10">
@@ -227,7 +226,6 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- GPU Card -->
                         <Border Margin="10,0,0,10" Style="{StaticResource CardStyle}">
                             <StackPanel>
                                 <DockPanel Margin="0,0,0,10">

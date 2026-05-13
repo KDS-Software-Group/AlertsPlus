@@ -98,6 +98,48 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="StyledToggle" TargetType="CheckBox">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Border x:Name="Track" Width="36" Height="20" CornerRadius="10"
+                        Background="#333335" VerticalAlignment="Center">
+                            <Ellipse x:Name="Thumb" Width="14" Height="14"
+                             Fill="White" HorizontalAlignment="Left"
+                             Margin="3,0,0,0" VerticalAlignment="Center">
+                                <Ellipse.RenderTransform>
+                                    <TranslateTransform x:Name="ThumbTranslate" X="0"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Track" Property="Background" Value="#3b82f6"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="ThumbTranslate"
+                                                     Storyboard.TargetProperty="X"
+                                                     To="16" Duration="0:0:0.15"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="ThumbTranslate"
+                                                     Storyboard.TargetProperty="X"
+                                                     To="0" Duration="0:0:0.15"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
     </UserControl.Resources>
 
@@ -130,7 +172,7 @@
 
                     <Rectangle Height="1" Fill="#242426" Margin="14,0"/>
 
-                    <!-- Light Mode - Coming Soon -->
+                    <!-- Light Mode -->
                     <Border Style="{StaticResource SettingsRow}" CornerRadius="0,0,8,8" Opacity="0.4">
                         <Grid>
                             <StackPanel>
@@ -144,6 +186,27 @@
                         </Grid>
                     </Border>
 
+                </StackPanel>
+            </Border>
+
+            <!-- STARTUP -->
+            <TextBlock Text="STARTUP" Style="{StaticResource SectionHeader}"/>
+            <Border Style="{StaticResource SettingsCard}">
+                <StackPanel>
+                    <Border Style="{StaticResource SettingsRow}" CornerRadius="8">
+                        <Grid>
+                            <StackPanel>
+                                <TextBlock Text="Launch on Startup" Style="{StaticResource RowLabel}"/>
+                                <TextBlock Text="Start AlertsPlus automatically when Windows starts"
+                               Style="{StaticResource RowSubLabel}"/>
+                            </StackPanel>
+                            <CheckBox x:Name="AutoLaunchToggle" HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Style="{StaticResource StyledToggle}"
+                          Checked="AutoLaunch_Changed"
+                          Unchecked="AutoLaunch_Changed"/>
+                        </Grid>
+                    </Border>
                 </StackPanel>
             </Border>
 
@@ -173,8 +236,8 @@
                             </StackPanel>
                         </Grid>
                     </Border>
-                    <TextBlock Text="©️ 2026 KDS Software Group" Style="{StaticResource SectionHeader}"/>
-                    <TextBlock Text="Version 1.0.0     Released 5/15/2026" Style="{StaticResource SectionHeader}"/>
+                    <TextBlock Text="     ©️ 2026 KDS Software Group" Style="{StaticResource SectionHeader}"/>
+                    <TextBlock Text="     Version 1.0.0     Released 5/15/2026" Style="{StaticResource SectionHeader}"/>
                 </StackPanel>
             </Border>
 

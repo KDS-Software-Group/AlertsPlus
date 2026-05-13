@@ -19,7 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="KDS.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="alertspluslogo.ico" />
+    <Resource Include="KDS.png" />
   </ItemGroup>
 
   <ItemGroup>

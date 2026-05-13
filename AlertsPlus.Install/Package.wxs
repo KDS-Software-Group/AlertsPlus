@@ -3,7 +3,7 @@
 
 	<Package Name="AlertsPlus"
              Manufacturer="KDS Software Group"
-             Version="0.9.0"
+             Version="0.9.5"
              UpgradeCode="AB4AC2D6-CDBC-4433-9140-C6E9BAD4FC4F">
 
 		
@@ -14,6 +14,8 @@
 		<Icon Id="AppIcon" SourceFile=".\alertspluslogo.ico" />
 		<MajorUpgrade DowngradeErrorMessage="A newer version of AlertsPlus is already installed." />
 		<MediaTemplate EmbedCab="yes" />
+
+		<Property Id="REINSTALLMODE" Value="amus"/>
 
 		<ui:WixUI Id="WixUI_InstallDir" />
 		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
@@ -29,6 +31,19 @@
 			<ComponentRef Id="SystemIOPortsRuntime" />
 			<ComponentRef Id="SystemManagementRuntime" />
 		</Feature>
+
+		<Property Id="MSIRESTARTMANAGERCONTROL" Value="Disable"/>
+
+		<CustomAction Id="KillApp"
+					  Execute="immediate"
+					  Impersonate="yes"
+					  ExeCommand="/C taskkill /F /IM AlertsPlus.exe"
+					  Directory="SystemFolder"
+					  Return="ignore"/>
+
+		<InstallExecuteSequence>
+			<Custom Action="KillApp" Before="InstallFiles" Condition="NOT Installed OR REINSTALL"/>
+		</InstallExecuteSequence>
 	</Package>
 
 	<Fragment>
@@ -40,6 +55,7 @@
 			<Directory Id="ApplicationProgramsFolder" Name="AlertsPlus" />
 		</StandardDirectory>
 	</Fragment>
+	
 
 	<Fragment>
 		<ComponentGroup Id="AppComponents" Directory="INSTALLFOLDER">

@@ -17,6 +17,7 @@ namespace AlertPlus
 
         public static NotificationTray Instance
         {
+            // ensure the one and only instance of the notification tray exists
             get
             {
                 if (_instance == null || !_instance.IsLoaded)
@@ -25,6 +26,7 @@ namespace AlertPlus
             }
         }
 
+        // constructor that sets up the notification tray window and positions it
         public NotificationTray()
         {
             InitializeComponent();
@@ -45,6 +47,7 @@ namespace AlertPlus
             };
         }
 
+        // method to add a notification to the tray and show the tray if it's not already visible
         public void AddNotification(string title, string message)
         {
             var item = new NotificationItem(title, message);

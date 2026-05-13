@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Interop;
 
 namespace AlertPlus
 {
@@ -12,9 +13,29 @@ namespace AlertPlus
             InitializeComponent();
             MainContentFrame.Content = new ViewHome();
             ApplyTitleBarStyle();
-            ApplyTheme();
         }
 
+        // app restarting methods so app can restart with no issues if instance already was opened
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            var source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
+            source?.AddHook(WndProc);
+        }
+
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == (int)NativeMethods.WM_SHOWWINDOW)
+            {
+                this.Show();
+                this.Activate();
+                this.WindowState = WindowState.Normal;
+                handled = true;
+            }
+            return IntPtr.Zero;
+        }
+
+        // mac os button functions
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
@@ -25,6 +46,23 @@ namespace AlertPlus
             this.WindowState = WindowState.Minimized;
         }
 
+        private void BtnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            // Zoom/Maximize
+            this.WindowState = (this.WindowState == WindowState.Maximized)
+                ? WindowState.Normal
+                : WindowState.Maximized;
+        }
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                this.DragMove(); // allows dragging the window when macos styling selected
+            }
+        }
+
+        // grabs what style is chosen in settings and applies it to the title bar
         public void ApplyTitleBarStyle()
         {
             string style = new SettingsRepository().GetSetting("TitleBarStyle", "MacOS");
@@ -51,52 +89,30 @@ namespace AlertPlus
             }
         }
 
-        public void ApplyTheme()
+        // keeps process open in background
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            string theme = new SettingsRepository().GetSetting("Theme", "Dark");
+            e.Cancel = true;
 
-            if (theme == "Light")
+            // if you attempt to alt+f4 itll ask if you want to keep running in bakcground.
+            var result = MessageBox.Show(
+                "Would you like to keep AlertsPlus running in the background?",
+                "AlertsPlus",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
             {
-                MainBorder.Background = new SolidColorBrush(Color.FromRgb(245, 245, 247));
-                SidebarBorder.Background = new SolidColorBrush(Color.FromRgb(230, 230, 235));
-                TitleText.Foreground = new SolidColorBrush(Color.FromRgb(100, 100, 100));
+                this.Hide();
             }
             else
             {
-                MainBorder.Background = new SolidColorBrush(Color.FromRgb(18, 18, 20));
-                SidebarBorder.Background = new SolidColorBrush(Color.FromRgb(26, 26, 28));
-                TitleText.Foreground = new SolidColorBrush(Color.FromRgb(96, 96, 96));
+                e.Cancel = false;
+                Application.Current.Shutdown();
             }
         }
 
-        private void BtnMaximize_Click(object sender, RoutedEventArgs e)
-        {
-            // Zoom/Maximize
-            this.WindowState = (this.WindowState == WindowState.Maximized)
-                ? WindowState.Normal
-                : WindowState.Maximized;
-        }
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
-            if (e.ButtonState == MouseButtonState.Pressed)
-            {
-                this.DragMove();
-            }
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            // Instead of closing, just hide the window
-            e.Cancel = true;
-            this.Hide();
-        }
-
+        // sidebar navigation thing
         private void Nav_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button clickedButton)
@@ -125,9 +141,6 @@ namespace AlertPlus
                         break;
                     case "Temp":
                         MainContentFrame.Content = new ViewTempWatch();
-                        break;
-                    case "History":
-                        MainContentFrame.Content = new ViewHistory();
                         break;
                     case "Settings":
                         MainContentFrame.Content = new ViewSettings();

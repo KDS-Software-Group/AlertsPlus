@@ -1,12 +1,10 @@
 ﻿using Microsoft.Data.Sqlite;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using static AlertPlus.ViewScheduler;
 
 namespace AlertPlus
 {
+    // Will not bother to comment really on this. Very basic. SQLite3 database to save settings and notifications
     public class SettingsRepository
     {
         private string _dbPath = "";

@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:AlertPlus"
         mc:Ignorable="d"
         Title="AlertPlus" Height="450" Width="800"
+        MinWidth="800" 
+        MinHeight="450"
         WindowStyle="None" 
         AllowsTransparency="True" 
         Background="Transparent"

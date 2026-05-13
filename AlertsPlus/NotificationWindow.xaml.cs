@@ -1,24 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿using System.Windows;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Runtime.InteropServices;
 
 namespace AlertPlus
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
-
     public partial class NotificationWindow : Window
     {
         private bool _stayUntilExit;
@@ -35,8 +21,12 @@ namespace AlertPlus
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Close(); // ends teh window instance
+            this.Close(); // ends the window instance
         }
+
+        // IMPORTANT!
+        // Call this function in any C# file to create a notifizcation. Input a title, message, and whether it should stay open until exit or close with a timer.
+        // Refer to documentation on Github for more information.
         public NotificationWindow(string title, string message, bool stayUntilExit)
         {
             InitializeComponent();
@@ -53,7 +43,7 @@ namespace AlertPlus
             };
         }
 
-
+        // Function that creates the slide in animation for the notification. also sets up a timer to close the notification after a certain amount of time if it's not important and not set to stay until exit.
         public void ShowAndSlide()
         {
             var area = SystemParameters.WorkArea;
@@ -92,6 +82,7 @@ namespace AlertPlus
             }
         }
 
+        // Function that slides the notification out and closes it. Called when the close button is clicked, or when the timer runs out.
         public void SlideOutAndClose()
         {
             var area = SystemParameters.WorkArea;
@@ -111,12 +102,6 @@ namespace AlertPlus
 
             slideOut.Completed += (s, e) => this.Close();
             this.BeginAnimation(Window.LeftProperty, slideOut);
-        }
-
-        public void UpdateMessage(string title, string message)
-        {
-            TitleTxt.Text = title;
-            MessageTxt.Text = message;
         }
     }
 }
