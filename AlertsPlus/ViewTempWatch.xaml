@@ -15,7 +15,7 @@
             <Setter Property="BorderBrush" Value="#2d2d30"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
-        
+
         <Style TargetType="ScrollBar">
             <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
             <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
@@ -124,9 +124,13 @@
     </UserControl.Resources>
 
     <Grid Margin="20">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="139*"/>
+            <ColumnDefinition Width="621*"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2">
             <StackPanel Margin="0,-10,0,10">
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardStyle}" Margin="0,10,0,0">
                     <DockPanel>
                         <StackPanel>
                             <TextBlock Text="Enable Temperature Monitoring" Foreground="White" FontSize="16" FontWeight="SemiBold"/>

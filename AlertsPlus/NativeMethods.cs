@@ -6,7 +6,7 @@ namespace AlertPlus
     // used for restarting instances of the app when already open
     internal static class NativeMethods
     {
-        public const uint WM_SHOWWINDOW = 0x0018;
+        public const uint WM_SHOWINSTANCE = 0x8001;
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr FindWindow(string? lpClassName, string lpWindowName);

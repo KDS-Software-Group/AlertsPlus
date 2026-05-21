@@ -4,10 +4,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Interop;
 
+
 namespace AlertPlus
 {
     public partial class MainContentArea : Window
     {
+        public static bool IsRestarting = false;
+
         public MainContentArea()
         {
             InitializeComponent();
@@ -25,7 +28,7 @@ namespace AlertPlus
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == (int)NativeMethods.WM_SHOWWINDOW)
+            if (msg == (int)NativeMethods.WM_SHOWINSTANCE)
             {
                 this.Show();
                 this.Activate();
@@ -92,24 +95,11 @@ namespace AlertPlus
         // keeps process open in background
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
+            if (IsRestarting)
+                return;
+
             e.Cancel = true;
-
-            // if you attempt to alt+f4 itll ask if you want to keep running in bakcground.
-            var result = MessageBox.Show(
-                "Would you like to keep AlertsPlus running in the background?",
-                "AlertsPlus",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                this.Hide();
-            }
-            else
-            {
-                e.Cancel = false;
-                Application.Current.Shutdown();
-            }
+            Dispatcher.BeginInvoke(new Action(() => this.Hide()));
         }
 
         // sidebar navigation thing

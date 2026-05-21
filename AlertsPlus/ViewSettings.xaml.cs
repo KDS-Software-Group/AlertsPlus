@@ -46,6 +46,9 @@ namespace AlertPlus
             else if (PosBottomLeft.IsChecked == true) position = "BottomLeft";
             _repo.SaveSetting("NotificationPosition", position);
 
+            // tell OnClosing to skip the popup since this is an intentional restart
+            MainContentArea.IsRestarting = true;
+
             string exePath = Process.GetCurrentProcess().MainModule!.FileName;
             Process.Start(exePath);
             Application.Current.Shutdown();

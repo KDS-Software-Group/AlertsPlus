@@ -18,7 +18,7 @@ namespace AlertPlus
             {
                 NativeMethods.PostMessage(
                     NativeMethods.FindWindow(null, "AlertPlus"),
-                    NativeMethods.WM_SHOWWINDOW, IntPtr.Zero, IntPtr.Zero);
+                    NativeMethods.WM_SHOWINSTANCE, IntPtr.Zero, IntPtr.Zero);
                 Application.Current.Shutdown();
                 return;
             }

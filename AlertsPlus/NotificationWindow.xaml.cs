@@ -24,9 +24,10 @@ namespace AlertPlus
             this.Close(); // ends the window instance
         }
 
-        // IMPORTANT!
-        // Call this function in any C# file to create a notifizcation. Input a title, message, and whether it should stay open until exit or close with a timer.
-        // Refer to documentation on Github for more information.
+        // IMPORTANT! This defines the NotificationWindow class. Two options for creating your own notifications:
+        // 1. You can either create an instance of this class and call ShowAndSlide() to display a notification
+        // 2. You can call the TriggerNotification class in MonitorLogic.cs and it does it for you
+        // Refer to documentation on Github for more information. (coming soon as of 5/21/2026!)
         public NotificationWindow(string title, string message, bool stayUntilExit)
         {
             InitializeComponent();
@@ -81,6 +82,8 @@ namespace AlertPlus
                 timer.Start();
             }
         }
+
+
 
         // Function that slides the notification out and closes it. Called when the close button is clicked, or when the timer runs out.
         public void SlideOutAndClose()

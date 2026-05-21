@@ -237,7 +237,7 @@
                         </Grid>
                     </Border>
                     <TextBlock Text="     ©️ 2026 KDS Software Group" Style="{StaticResource SectionHeader}"/>
-                    <TextBlock Text="     Version 1.0.0     Released 5/15/2026" Style="{StaticResource SectionHeader}"/>
+                    <TextBlock Text="     Version 1.0.0     Released 5/21/2026" Style="{StaticResource SectionHeader}"/>
                 </StackPanel>
             </Border>
 

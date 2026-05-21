@@ -17,79 +17,21 @@
             <Setter Property="Margin" Value="0,0,0,6"/>
         </Style>
 
+
+        <!-- problematic style for TextBox and ComboBox, any issues look here future me or devs please! -->
         <Style x:Key="ModernInput" TargetType="TextBox">
-            <Setter Property="Background" Value="#1a1a1c"/>
+            <Setter Property="Background" Value="#222224"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="CaretBrush" Value="White"/>
-            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Padding" Value="12,9"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="#2d2d30"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border x:Name="bg" Background="{TemplateBinding Background}"
-                                CornerRadius="8" BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="bg" Property="BorderBrush" Value="#3b82f6"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="ModernDatePicker" TargetType="DatePicker">
-            <Setter Property="Background" Value="#1a1a1c"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#2d2d30"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="DatePicker">
-                        <Border x:Name="bg" Background="{TemplateBinding Background}"
-                                CornerRadius="8" BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <DatePickerTextBox x:Name="PART_TextBox"
-                                                   Grid.Column="0"
-                                                   Background="Transparent"
-                                                   Foreground="White"
-                                                   BorderThickness="0"
-                                                   Padding="12,10"
-                                                   VerticalContentAlignment="Center"
-                                                   FontSize="13"/>
-                                <Button x:Name="PART_Button" Grid.Column="1"
-                                        Focusable="False" Width="32"
-                                        Background="Transparent" BorderThickness="0"
-                                        VerticalAlignment="Stretch">
-                                    <TextBlock Text="📅" FontSize="13" VerticalAlignment="Center"/>
-                                </Button>
-                                <Popup x:Name="PART_Popup" AllowsTransparency="True"
-                                       Placement="Bottom" StaysOpen="False"/>
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="bg" Property="BorderBrush" Value="#3b82f6"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <Style x:Key="ModernCombo" TargetType="ComboBox">
-            <Setter Property="Background" Value="#1a1a1c"/>
+            <Setter Property="Background" Value="#222224"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderBrush" Value="#2d2d30"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -108,11 +50,13 @@
                                                   VerticalAlignment="Center"/>
                                 <TextBlock Text="▾" Foreground="#505050" HorizontalAlignment="Right"
                                            VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                <ToggleButton Focusable="False" IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                <ToggleButton Focusable="False"
+                                              IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                               Background="Transparent" BorderThickness="0" Opacity="0"/>
-                                <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}"
+                                <Popup x:Name="Popup" Placement="Bottom"
+                                       IsOpen="{TemplateBinding IsDropDownOpen}"
                                        AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
-                                    <Border Background="#1a1a1c" BorderBrush="#2d2d30" BorderThickness="1"
+                                    <Border Background="#222224" BorderBrush="#2d2d30" BorderThickness="1"
                                             CornerRadius="8" MinWidth="{TemplateBinding ActualWidth}">
                                         <ScrollViewer>
                                             <ItemsPresenter/>
@@ -170,7 +114,7 @@
         </Style>
 
         <Style x:Key="GhostBtn" TargetType="Button">
-            <Setter Property="Background" Value="#1a1a1c"/>
+            <Setter Property="Background" Value="#222224"/>
             <Setter Property="Foreground" Value="#808080"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -188,7 +132,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bg" Property="Background" Value="#222224"/>
+                                <Setter TargetName="bg" Property="Background" Value="#2a2a2c"/>
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -199,22 +143,20 @@
 
     </UserControl.Resources>
 
-    <Grid Margin="20,16">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="24"/>
-            <ColumnDefinition Width="280" MinWidth="260"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- LEFT: Notification List -->
-        <Grid Grid.Column="0">
+    <Grid>
+        <Grid Margin="20,16" x:Name="MainView">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Scheduled" Foreground="White" FontSize="18"
-                       FontWeight="SemiBold" Margin="0,0,0,16"/>
+            <Grid Grid.Row="0" Margin="0,0,0,16">
+                <TextBlock Text="Scheduled" Foreground="White" FontSize="18"
+                           FontWeight="SemiBold" VerticalAlignment="Center"/>
+                <Button Content="+ New Reminder" HorizontalAlignment="Right"
+                        Padding="16,8" Style="{StaticResource PrimaryBtn}"
+                        Click="OpenForm_Click"/>
+            </Grid>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                 <ItemsControl x:Name="NotificationsControl">
@@ -230,11 +172,9 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Blue accent bar -->
                                     <Border Grid.Column="0" Width="3" CornerRadius="2"
                                             Background="#3b82f6" Margin="0,0,14,0"/>
 
-                                    <!-- Content -->
                                     <StackPanel Grid.Column="1">
                                         <TextBlock Text="{Binding Title}" Foreground="White"
                                                    FontWeight="SemiBold" FontSize="14"/>
@@ -245,7 +185,8 @@
                                         <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                             <TextBlock Text="{Binding DateDisplay}" Foreground="#505050" FontSize="11"/>
                                             <TextBlock Text=" · " Foreground="#404040" FontSize="11"/>
-                                            <TextBlock Text="{Binding TimeDisplay}" Foreground="#3b82f6" FontSize="11" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding TimeDisplay}" Foreground="#3b82f6"
+                                                       FontSize="11" FontWeight="SemiBold"/>
                                             <TextBlock Text=" · " Foreground="#404040" FontSize="11"
                                                        Visibility="{Binding HasExe}"/>
                                             <TextBlock Text="🚀 App launch" Foreground="#505050" FontSize="11"
@@ -253,7 +194,6 @@
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <!-- Delete -->
                                     <Button Grid.Column="2" Click="DeleteNotification_Click"
                                             Tag="{Binding Id}" VerticalAlignment="Center">
                                         <Button.Template>
@@ -283,75 +223,147 @@
             </ScrollViewer>
         </Grid>
 
-        <!-- RIGHT: Add Panel -->
-        <Border Grid.Column="2" Background="#1a1a1c" CornerRadius="12"
-                BorderBrush="#2d2d30" BorderThickness="1"
-                Padding="20" VerticalAlignment="Top">
-            <StackPanel>
+        <Grid x:Name="ModalOverlay" Visibility="Collapsed">
+            <Border Background="#88000000" IsHitTestVisible="False"/>
+            <Grid MouseDown="CloseForm_Click" Background="Transparent"/>
 
-                <TextBlock Text="New Reminder" Foreground="White" FontSize="15"
-                           FontWeight="SemiBold" Margin="0,0,0,20"/>
+            <Border Background="#1a1a1c" CornerRadius="14"
+                    BorderBrush="#2d2d30" BorderThickness="1"
+                    Padding="24" MaxWidth="420" MaxHeight="680"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    MouseDown="FormCard_MouseDown">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <!-- TITLE -->
-                <TextBlock Text="TITLE" Style="{StaticResource FieldLabel}"/>
-                <TextBox x:Name="TitleInput" Style="{StaticResource ModernInput}" Margin="0,0,0,14"/>
+                    <Grid Grid.Row="0" Margin="0,0,0,16">
+                        <TextBlock Text="New Reminder" Foreground="White"
+                                   FontSize="16" FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Click="CloseForm_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="x" Width="28" Height="28" CornerRadius="14"
+                                            Background="Transparent">
+                                        <TextBlock x:Name="xt" Text="✕" Foreground="#505050"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" FontSize="11"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="x" Property="Background" Value="#30FF453A"/>
+                                            <Setter TargetName="xt" Property="Foreground" Value="#FF453A"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Grid>
 
-                <!-- DESCRIPTION -->
-                <TextBlock Text="DESCRIPTION" Style="{StaticResource FieldLabel}"/>
-                <TextBox x:Name="DescriptionInput" Style="{StaticResource ModernInput}"
-                         Height="70" TextWrapping="Wrap" AcceptsReturn="True"
-                         VerticalContentAlignment="Top" Margin="0,0,0,14"/>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                        <StackPanel>
 
-                <!-- DATE -->
-                <TextBlock Text="DATE" Style="{StaticResource FieldLabel}"/>
-                <DatePicker x:Name="DatePicker" Style="{StaticResource ModernDatePicker}"
-                            Margin="0,0,0,14"/>
+                            <TextBlock Text="TITLE" Style="{StaticResource FieldLabel}"/>
+                            <TextBox x:Name="TitleInput"
+                                     Style="{StaticResource ModernInput}"
+                                     VerticalContentAlignment="Center"
+                                     Height="44" Margin="0,0,0,14"/>
 
-                <!-- TIME -->
-                <TextBlock Text="TIME" Style="{StaticResource FieldLabel}"/>
-                <Grid Margin="0,0,0,14">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="80"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBox x:Name="HourInput" Text="12" Style="{StaticResource ModernInput}"
-                             TextAlignment="Center" Grid.Column="0"/>
-                    <TextBlock Text=":" Foreground="#505050" Grid.Column="1"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
-                    <TextBox x:Name="MinuteInput" Text="00" Style="{StaticResource ModernInput}"
-                             TextAlignment="Center" Grid.Column="2"/>
-                    <ComboBox x:Name="AmPmInput" SelectedIndex="0" Grid.Column="4"
-                              Style="{StaticResource ModernCombo}">
-                        <ComboBoxItem Content="AM"/>
-                        <ComboBoxItem Content="PM"/>
-                    </ComboBox>
+                            <TextBlock Text="DESCRIPTION" Style="{StaticResource FieldLabel}"/>
+                            <TextBox x:Name="DescriptionInput"
+                                     Style="{StaticResource ModernInput}"
+                                     Height="80" TextWrapping="Wrap" AcceptsReturn="True"
+                                     VerticalContentAlignment="Top"
+                                     Padding="12,10"
+                                     Margin="0,0,0,14"/>
+
+                            <TextBlock Text="DATE" Style="{StaticResource FieldLabel}"/>
+                            <DatePicker x:Name="DatePickerHidden"
+                                        Height="44" Margin="0,0,0,14"
+                                        SelectedDateChanged="DatePicker_SelectedDateChanged"
+                                        Foreground="White" FontSize="13"
+                                        Background="#222224">
+                                <DatePicker.Resources>
+                                    <Style TargetType="DatePickerTextBox">
+                                        <Setter Property="Background" Value="#222224"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="CaretBrush" Value="White"/>
+                                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="DatePickerTextBox">
+                                                    <Border Background="#222224" CornerRadius="8"
+                                                            BorderBrush="#2d2d30" BorderThickness="1"
+                                                            Padding="12,0">
+                                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                                      VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DatePicker.Resources>
+                            </DatePicker>
+
+                            <TextBlock Text="TIME" Style="{StaticResource FieldLabel}"/>
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="80"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="HourInput" Text="12"
+                                         Style="{StaticResource ModernInput}"
+                                         VerticalContentAlignment="Center"
+                                         TextAlignment="Center"
+                                         Height="44" Grid.Column="0"/>
+                                <TextBlock Text=":" Foreground="#505050" Grid.Column="1"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           FontSize="18"/>
+                                <TextBox x:Name="MinuteInput" Text="00"
+                                         Style="{StaticResource ModernInput}"
+                                         VerticalContentAlignment="Center"
+                                         TextAlignment="Center"
+                                         Height="44" Grid.Column="2"/>
+                                <ComboBox x:Name="AmPmInput" SelectedIndex="0" Grid.Column="4"
+                                          Style="{StaticResource ModernCombo}" Height="44">
+                                    <ComboBoxItem Content="AM"/>
+                                    <ComboBoxItem Content="PM"/>
+                                </ComboBox>
+                            </Grid>
+
+                            <TextBlock Text="LAUNCH APP (OPTIONAL)" Style="{StaticResource FieldLabel}"/>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="ExePathInput"
+                                         Style="{StaticResource ModernInput}"
+                                         VerticalContentAlignment="Center"
+                                         IsReadOnly="True" Height="44" Grid.Column="0"
+                                         Foreground="#606060"/>
+                                <Button Grid.Column="2" Content="Browse" Padding="14,10"
+                                        Style="{StaticResource GhostBtn}"
+                                        Click="BrowseExe_Click"/>
+                            </Grid>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <Button Grid.Row="2" Content="Schedule Reminder" Height="42"
+                            Margin="0,16,0,0" Padding="0"
+                            Style="{StaticResource PrimaryBtn}"
+                            Click="Schedule_Click"/>
                 </Grid>
-
-                <!-- LAUNCH APP -->
-                <TextBlock Text="LAUNCH APP (OPTIONAL)" Style="{StaticResource FieldLabel}"/>
-                <Grid Margin="0,0,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBox x:Name="ExePathInput" Style="{StaticResource ModernInput}"
-                             IsReadOnly="True" Grid.Column="0"
-                             Foreground="#606060"/>
-                    <Button Grid.Column="2" Content="Browse" Padding="14,10"
-                            Style="{StaticResource GhostBtn}"
-                            Click="BrowseExe_Click"/>
-                </Grid>
-
-                <!-- SUBMIT -->
-                <Button Content="Schedule Reminder" Height="40" Padding="0"
-                        Style="{StaticResource PrimaryBtn}"
-                        Click="Schedule_Click"/>
-
-            </StackPanel>
-        </Border>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

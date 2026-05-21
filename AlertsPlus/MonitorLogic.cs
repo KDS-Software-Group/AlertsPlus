@@ -1,6 +1,7 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace AlertPlus
 {
@@ -199,33 +200,54 @@ namespace AlertPlus
 
         private void TriggerNotification(string title, string body, bool critical = false)
         {
-            _activeNotifications.RemoveAll(n => !n.IsVisible);
+            // clean up fully closed notifications only
+            _activeNotifications.RemoveAll(n => !n.IsLoaded);
 
-            var area = System.Windows.SystemParameters.WorkArea;
-            double offset = _activeNotifications.Count * 110;
+            // cap at 3 notifications max to prevent flooding
+            if (_activeNotifications.Count >= 3) return;
+
+            var area = SystemParameters.WorkArea;
+            string position = new SettingsRepository().GetSetting("NotificationPosition", "BottomRight");
 
             var notification = new NotificationWindow(title, body, critical);
             notification.IsImportant = critical;
-            notification.Top = area.Bottom - 110 - offset;
+
+            // position based on how many are already showing
+            double offset = _activeNotifications.Count * 110;
+            notification.Top = position.Contains("Top")
+                ? area.Top + 10 + offset
+                : area.Bottom - 110 - offset;
 
             notification.Closed += (s, e) =>
             {
                 _activeNotifications.Remove(notification);
-                ReStackNotifications();
+                // small delay before restacking so the slide out animation finishes first
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(600) };
+                timer.Tick += (ts, te) => { timer.Stop(); ReStackNotifications(); };
+                timer.Start();
             };
 
             _activeNotifications.Add(notification);
             notification.ShowAndSlide();
         }
 
-        // repositions all active notifications should be called after one is closed to fill gaps and keep them stacked nicely
         private void ReStackNotifications()
         {
-            var area = System.Windows.SystemParameters.WorkArea;
+            // remove any that closed during the delay
+            _activeNotifications.RemoveAll(n => !n.IsLoaded);
+
+            var area = SystemParameters.WorkArea;
+            string position = new SettingsRepository().GetSetting("NotificationPosition", "BottomRight");
+
             for (int i = 0; i < _activeNotifications.Count; i++)
             {
-                _activeNotifications[i].Top = area.Bottom - 110 - (i * 110);
-                _activeNotifications[i].Left = area.Left + area.Width - 320;
+                double offset = i * 110;
+                _activeNotifications[i].Top = position.Contains("Top")
+                    ? area.Top + 10 + offset
+                    : area.Bottom - 110 - offset;
+                _activeNotifications[i].Left = position.Contains("Left")
+                    ? area.Left
+                    : area.Left + area.Width - 320;
             }
         }
     }
