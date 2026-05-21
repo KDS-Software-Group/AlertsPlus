@@ -9,6 +9,7 @@
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon>alertspluslogo.ico</ApplicationIcon>
     <PackageIcon>alertspluslogo.png</PackageIcon>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>

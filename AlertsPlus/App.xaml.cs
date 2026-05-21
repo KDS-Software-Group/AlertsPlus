@@ -7,6 +7,7 @@ namespace AlertPlus
     public partial class App : Application
     {
         private static Mutex? _mutex;
+        public static System.Windows.Forms.NotifyIcon? TrayIcon { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -23,22 +24,40 @@ namespace AlertPlus
                 return;
             }
 
-            // wpf stuff
             base.OnStartup(e);
             this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-            // splash screen stuff
             var splash = new SplashScreen(() => LaunchApp());
             splash.Show();
         }
 
         private void LaunchApp()
         {
-            // initializes monitor logic and main window, applies title bar style based on settings, and shows the main window
             try
             {
                 var monitor = new MonitorLogic();
                 monitor.Initialize();
+
+                // system tray icon setup
+                TrayIcon = new System.Windows.Forms.NotifyIcon
+                {
+                    Icon = System.Drawing.Icon.ExtractAssociatedIcon(
+                    System.Diagnostics.Process.GetCurrentProcess().MainModule!.FileName),
+                    Visible = true,
+                    Text = "AlertPlus"
+                };
+
+                TrayIcon.DoubleClick += (s, e) => ShowMainWindow();
+
+                var menu = new System.Windows.Forms.ContextMenuStrip();
+                menu.Items.Add("Open AlertPlus", null, (s, e) => ShowMainWindow());
+                menu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
+                menu.Items.Add("Exit", null, (s, e) =>
+                {
+                    TrayIcon.Visible = false;
+                    Application.Current.Shutdown();
+                });
+                TrayIcon.ContextMenuStrip = menu;
 
                 string style = new SettingsRepository().GetSetting("TitleBarStyle", "MacOS");
                 var mainWindow = new MainContentArea();
@@ -54,7 +73,6 @@ namespace AlertPlus
 
                 mainWindow.Show();
             }
-            // error throwing incase of this garbage code breaking or something
             catch (Exception ex)
             {
                 MessageBox.Show($"Startup error:\n\n{ex.GetType().Name}\n\n{ex.Message}\n\n{ex.StackTrace}",
@@ -65,8 +83,23 @@ namespace AlertPlus
             }
         }
 
+        private void ShowMainWindow()
+        {
+            foreach (Window w in Application.Current.Windows)
+            {
+                if (w is MainContentArea main)
+                {
+                    main.Show();
+                    main.Activate();
+                    main.WindowState = WindowState.Normal;
+                    return;
+                }
+            }
+        }
+
         protected override void OnExit(ExitEventArgs e)
         {
+            TrayIcon?.Dispose();
             _mutex?.ReleaseMutex();
             _mutex?.Dispose();
             base.OnExit(e);
