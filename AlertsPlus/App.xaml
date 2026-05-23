@@ -1,7 +1,7 @@
-﻿<Application x:Class="AlertPlus.App"
+﻿<Application x:Class="AlertsPlus.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:AlertPlus"
+             xmlns:local="clr-namespace:AlertsPlus"
              >
     <Application.Resources>
          

@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     public partial class NotificationItem : UserControl 
     {

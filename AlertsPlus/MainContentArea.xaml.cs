@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Interop;
 
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     public partial class MainContentArea : Window
     {

@@ -1,4 +1,4 @@
-﻿<Window x:Class="AlertPlus.NotificationWindow"
+﻿<Window x:Class="AlertsPlus.NotificationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Notification" Height="100" Width="300"

@@ -3,7 +3,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using System.Runtime.InteropServices;
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     public partial class NotificationWindow : Window
     {

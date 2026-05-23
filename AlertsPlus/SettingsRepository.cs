@@ -1,8 +1,8 @@
 ﻿using Microsoft.Data.Sqlite;
 using System.IO;
-using static AlertPlus.ViewScheduler;
+using static AlertsPlus.ViewScheduler;
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     // Will not bother to comment really on this. Very basic. SQLite3 database to save settings and notifications
     public class SettingsRepository
@@ -144,13 +144,13 @@ namespace AlertPlus
 
         private string GetDatabasePath()
         {
-            // points to C:\Users\whatevername\AppData\Local\AlertPlus
-            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlertPlus");
+            // points to C:\Users\whatevername\AppData\Local\AlertsPlus
+            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AlertsPlus");
 
-            // create the AlertPlus folder if it doesn't exist
+            // create the AlertsPlus folder if it doesn't exist
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
-            return Path.Combine(folder, "AlertPlus_settings.db");
+            return Path.Combine(folder, "AlertsPlus_settings.db");
         }
 
         public void DeleteNotification(int id)

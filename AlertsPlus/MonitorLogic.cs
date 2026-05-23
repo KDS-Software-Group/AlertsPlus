@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     public class MonitorLogic
     {

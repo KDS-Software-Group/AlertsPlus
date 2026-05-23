@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     public partial class ViewHome : UserControl
     {

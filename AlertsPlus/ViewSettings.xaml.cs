@@ -3,7 +3,7 @@ using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     [SupportedOSPlatform("windows")]
     public partial class ViewSettings : UserControl

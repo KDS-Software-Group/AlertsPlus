@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AlertPlus.ViewHome"
+﻿<UserControl x:Class="AlertsPlus.ViewHome"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,7 +8,7 @@
 
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Welcome to AlertPlus" 
+            <TextBlock Text="Welcome to AlertsPlus" 
                        Foreground="White" 
                        FontSize="32" 
                        FontWeight="Bold" 

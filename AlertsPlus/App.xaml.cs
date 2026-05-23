@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     public partial class App : Application
     {
@@ -12,13 +12,13 @@ namespace AlertPlus
         protected override void OnStartup(StartupEventArgs e)
         {
             // creates mutex to ensure single instance
-            _mutex = new Mutex(true, "AlertPlus_SingleInstance", out bool isNewInstance);
+            _mutex = new Mutex(true, "AlertsPlus_SingleInstance", out bool isNewInstance);
 
             // sends message if instance already running then exits
             if (!isNewInstance)
             {
                 NativeMethods.PostMessage(
-                    NativeMethods.FindWindow(null, "AlertPlus"),
+                    NativeMethods.FindWindow(null, "AlertsPlus"),
                     NativeMethods.WM_SHOWINSTANCE, IntPtr.Zero, IntPtr.Zero);
                 Application.Current.Shutdown();
                 return;
@@ -44,13 +44,13 @@ namespace AlertPlus
                     Icon = System.Drawing.Icon.ExtractAssociatedIcon(
                     System.Diagnostics.Process.GetCurrentProcess().MainModule!.FileName),
                     Visible = true,
-                    Text = "AlertPlus"
+                    Text = "AlertsPlus"
                 };
 
                 TrayIcon.DoubleClick += (s, e) => ShowMainWindow();
 
                 var menu = new System.Windows.Forms.ContextMenuStrip();
-                menu.Items.Add("Open AlertPlus", null, (s, e) => ShowMainWindow());
+                menu.Items.Add("Open AlertsPlus", null, (s, e) => ShowMainWindow());
                 menu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
                 menu.Items.Add("Exit", null, (s, e) =>
                 {

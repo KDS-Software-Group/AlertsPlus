@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     // very confusing file that checks for a window name and then sends message when matched
     // used for restarting instances of the app when already open

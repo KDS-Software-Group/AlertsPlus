@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Runtime.InteropServices;
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     public partial class NotificationTray : Window
     {

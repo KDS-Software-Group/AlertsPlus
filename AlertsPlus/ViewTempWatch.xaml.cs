@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace AlertPlus
+namespace AlertsPlus
 {
     public partial class ViewTempWatch : UserControl
     {
